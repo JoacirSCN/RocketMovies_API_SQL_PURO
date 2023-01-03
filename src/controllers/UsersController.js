@@ -1,16 +1,27 @@
+//const { hash, compare } = require('bcryptjs');
+const AppError = require('../utils/AppError');
+const sqliteConnection = require('../database/sqlite'); // É a conecção com o banco de dados
+
 class UsersController {
-  /**
-   * index - GET para listar vários registros.
-   * show - GET para exibir um registro especifico.
-   * create - POST para criar um registro.
-   * update - PUT para atualizar um registro.
-   * delete - DELETE para remover um registro.
-   */
-
-  create(req, res) {
+  async create(req, res) {
     const { name, email, password } = req.body;
+    const db = await sqliteConnection();
 
-    res.json({ name, email, password });
+    // Selecionar todos os usuarios onde o email é igual ao email do request.body
+    const checkUserExists = await db.get('SELECT * FROM users WHERE email = (?)', [email]);
+    if(checkUserExists) {
+      throw new AppError('Este e-mail já está em uso.');
+    }
+    // ----------------------------------------------------------------------------------------
+    // Inserir dados do Usuários
+    await db.run('INSERT INTO users (name, email, password) VALUES (?,?,?)',
+      [name, email, password]
+    );
+
+    // ----------------------------------------------------------------------------------------
+
+    return res.status(201).json({name, email, password})
+
   }
 }
 
