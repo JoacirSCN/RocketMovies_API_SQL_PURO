@@ -1,6 +1,15 @@
+require('express-async-errors')
+const AppError = require("./utils/AppError");
+
+/* SRC/DATABASE/SQLITE/MIGRATIONS */
+// Executa o index de migrations
+const migrationRun = require('./database/sqlite/migrations')
+migrationRun();
+
+/* --------------------------- */
+
 const express = require('express');
 const routes = require('./routes');
-const migrationRun = require('./database/sqlite/migrations')
 
 const app = express(); // Iniciando o express
 
@@ -23,7 +32,6 @@ app.use((error, req, response, next) => {
   });
 });
 
-migrationRun();
 
 const PORT = 3333;
 

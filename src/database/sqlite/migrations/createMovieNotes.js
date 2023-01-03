@@ -10,4 +10,4 @@ const createMovieNotes = `
   )
 `;
 
-//module.exports = createMovieNotes;
+module.exports = createMovieNotes;
