@@ -1,4 +1,4 @@
-require('express-async-errors')
+require('express-async-errors');
 const AppError = require("./utils/AppError");
 
 /* SRC/DATABASE/SQLITE/MIGRATIONS */
@@ -10,7 +10,6 @@ migrationRun();
 
 const express = require('express');
 const routes = require('./routes');
-
 const app = express(); // Iniciando o express
 
 app.use(express.json());
@@ -24,7 +23,6 @@ app.use((error, req, response, next) => {
     });
   }
 
-  console.error(err)
 	// SERVIDOR
   return response.status(500).json({
     status: "error",
